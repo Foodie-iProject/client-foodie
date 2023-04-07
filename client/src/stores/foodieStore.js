@@ -72,7 +72,7 @@ export const useFoodieStore = defineStore("foodie", {
           },
         });
         console.log(data);
-        this.cartList = await fetchCart();
+        // this.cartList = await fetchCart();
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("name", data.name);
         this.name = data.name;
@@ -91,7 +91,7 @@ export const useFoodieStore = defineStore("foodie", {
           showConfirmButton: false,
         });
       } catch (error) {
-        // console.log(error);
+        console.log(error);
         Swal.fire({
           title: error.response.data.message,
           timerProgressBar: true,
@@ -206,11 +206,11 @@ export const useFoodieStore = defineStore("foodie", {
         });
       }
     },
-    async placeOrder(id) {
+    async placeOrder() {
       try {
         const data = await axios({
           method: "post",
-          url: this.baseUrl + "/cart/" + id,
+          url: this.baseUrl + "/placeOrder/",
           headers: {
             access_token: localStorage.access_token,
           },
@@ -219,6 +219,8 @@ export const useFoodieStore = defineStore("foodie", {
             totalPrice: this.totalPrice,
           },
         });
+        this.foodCart = [];
+        this.defaultSearch = "";
         this.router.push("/");
         Swal.fire({
           toast: true,
